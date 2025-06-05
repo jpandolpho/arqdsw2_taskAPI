@@ -69,18 +69,35 @@ public class TarefaDAO {
 		return rows > 0;
 	}
 
-	public Tarefa buscarTarefa(int id) throws SQLException{
+	public Tarefa buscarTarefa(int id) throws SQLException {
 		Tarefa t = null;
 		String sql = "SELECT * FROM tarefas WHERE id = ?";
-		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				t = new Tarefa(rs.getInt("id"), rs.getString("titulo"), rs.getString("descricao"),
 						rs.getBoolean("concluida"));
 			}
 		}
 		return t;
+	}
+
+	public List<Tarefa> buscarPendentes() throws Exception {
+		List<Tarefa> tarefas = new ArrayList<>();
+		String sql = "SELECT * FROM tarefas WHERE concluida = false";
+		try (Connection conn = dataSource.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery()) {
+			while (rs.next()) {
+				Tarefa tarefa = new Tarefa();
+				tarefa.setId(rs.getInt("id"));
+				tarefa.setTitulo(rs.getString("titulo"));
+				tarefa.setDescricao(rs.getString("descricao"));
+				tarefa.setConcluida(rs.getBoolean("concluida"));
+				tarefas.add(tarefa);
+			}
+		}
+		return tarefas;
 	}
 }

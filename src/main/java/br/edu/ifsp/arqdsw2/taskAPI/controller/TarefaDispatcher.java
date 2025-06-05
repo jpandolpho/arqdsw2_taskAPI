@@ -8,6 +8,7 @@ import br.edu.ifsp.arqdsw2.taskAPI.controller.command.Command;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.CriarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.DeletarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.ListarTarefasCommand;
+import br.edu.ifsp.arqdsw2.taskAPI.controller.command.ListarTarefasPendentesCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.RecuperarTarefaCommand;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -20,6 +21,7 @@ public class TarefaDispatcher {
 		rotas.put("GET:/id", new RecuperarTarefaCommand());
 		rotas.put("PUT:/id", new AtualizarTarefaCommand());
 		rotas.put("DELETE:/id", new DeletarTarefaCommand());
+		rotas.put("GET:/pendentes", new ListarTarefasPendentesCommand());
 	}
 
 	public Command resolver(HttpServletRequest request) {
@@ -29,6 +31,8 @@ public class TarefaDispatcher {
 			return rotas.get(method + ":/");
 		} else if (path.matches("^/\\d+$")) {
 			return rotas.get(method + ":/id");
+		} else if (path.equals("/pendentes")) {
+			return rotas.get(method + ":/pendentes");
 		}
 		return null;
 	}
