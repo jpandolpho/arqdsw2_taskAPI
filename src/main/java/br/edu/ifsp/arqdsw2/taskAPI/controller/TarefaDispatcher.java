@@ -5,6 +5,7 @@ import java.util.Map;
 
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.AtualizarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.Command;
+import br.edu.ifsp.arqdsw2.taskAPI.controller.command.ConcluirTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.CriarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.DeletarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.ListarTarefasCommand;
@@ -22,6 +23,7 @@ public class TarefaDispatcher {
 		rotas.put("PUT:/id", new AtualizarTarefaCommand());
 		rotas.put("DELETE:/id", new DeletarTarefaCommand());
 		rotas.put("GET:/pendentes", new ListarTarefasPendentesCommand());
+		rotas.put("PATCH:/id/concluir", new ConcluirTarefaCommand());
 	}
 
 	public Command resolver(HttpServletRequest request) {
@@ -33,6 +35,8 @@ public class TarefaDispatcher {
 			return rotas.get(method + ":/id");
 		} else if (path.equals("/pendentes")) {
 			return rotas.get(method + ":/pendentes");
+		} else if (path.matches("^/\\d+/concluir$")) {
+			return rotas.get(method + ":/id/concluir");
 		}
 		return null;
 	}

@@ -100,4 +100,12 @@ public class TarefaDAO {
 		}
 		return tarefas;
 	}
+
+	public void marcarComoConcluida(int id) throws SQLException {
+		String sql = "UPDATE tarefas SET concluida = TRUE WHERE id = ?";
+		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+		}
+	}
 }
