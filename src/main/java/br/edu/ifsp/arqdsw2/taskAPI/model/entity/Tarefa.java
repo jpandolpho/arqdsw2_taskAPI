@@ -1,4 +1,4 @@
-package br.edu.ifsp.arqdsw2.taskAPI.model;
+package br.edu.ifsp.arqdsw2.taskAPI.model.entity;
 
 public class Tarefa {
 	private int id;

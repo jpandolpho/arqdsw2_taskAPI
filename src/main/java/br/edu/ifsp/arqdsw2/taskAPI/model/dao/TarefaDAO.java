@@ -11,7 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import br.edu.ifsp.arqdsw2.taskAPI.model.Tarefa;
+import br.edu.ifsp.arqdsw2.taskAPI.model.entity.Tarefa;
 
 public class TarefaDAO {
 	private DataSource dataSource;
@@ -46,22 +46,26 @@ public class TarefaDAO {
 		}
 	}
 
-	public void atualizar(int id, Tarefa tarefa) throws SQLException {
-		String sql = "UPDATE tarefas SET titulo = ?, descricao = ?, dataEntrega = ?, concluida = ? WHERE id = ?";
+	public boolean atualizar(int id, Tarefa tarefa) throws SQLException {
+		String sql = "UPDATE tarefas SET titulo = ?, descricao = ?, concluida = ? WHERE id = ?";
+		int rows = 0;
 		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setString(1, tarefa.getTitulo());
 			stmt.setString(2, tarefa.getDescricao());
 			stmt.setBoolean(3, tarefa.isConcluida());
 			stmt.setInt(4, id);
-			stmt.executeUpdate();
+			rows = stmt.executeUpdate();
 		}
+		return rows > 0;
 	}
 
-	public void deletar(int id) throws SQLException {
+	public boolean deletar(int id) throws SQLException {
 		String sql = "DELETE FROM tarefas WHERE id = ?";
+		int rows = 0;
 		try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 			stmt.setInt(1, id);
-			stmt.executeUpdate();
+			rows = stmt.executeUpdate();
 		}
+		return rows > 0;
 	}
 }
