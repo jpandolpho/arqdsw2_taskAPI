@@ -68,4 +68,19 @@ public class TarefaDAO {
 		}
 		return rows > 0;
 	}
+
+	public Tarefa buscarTarefa(int id) throws SQLException{
+		Tarefa t = null;
+		String sql = "SELECT * FROM tarefas WHERE id = ?";
+		try (Connection conn = dataSource.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				t = new Tarefa(rs.getInt("id"), rs.getString("titulo"), rs.getString("descricao"),
+						rs.getBoolean("concluida"));
+			}
+		}
+		return t;
+	}
 }

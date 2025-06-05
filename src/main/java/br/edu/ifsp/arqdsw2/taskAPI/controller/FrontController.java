@@ -9,6 +9,7 @@ import br.edu.ifsp.arqdsw2.taskAPI.controller.command.Command;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.CriarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.DeletarTarefaCommand;
 import br.edu.ifsp.arqdsw2.taskAPI.controller.command.ListarTarefasCommand;
+import br.edu.ifsp.arqdsw2.taskAPI.controller.command.RecuperarTarefaCommand;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +21,6 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	public void init() {
-		comandos.put("GET", new ListarTarefasCommand());
 		comandos.put("POST", new CriarTarefaCommand());
 		comandos.put("PUT", new AtualizarTarefaCommand());
 		comandos.put("DELETE", new DeletarTarefaCommand());
@@ -33,7 +33,15 @@ public class FrontController extends HttpServlet {
 			Command comando = comandos.get(metodo);
 			if (comando != null) {
 				comando.executar(request, response);
-			} else {
+			} else if(metodo.equals("GET")){
+				String id = request.getPathInfo();
+				if(id!=null) {
+					comando = new RecuperarTarefaCommand();
+				}else {
+					comando = new ListarTarefasCommand();
+				}
+				comando.executar(request, response);
+			}else {
 				response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			}
 		} catch (Exception e) {
