@@ -18,7 +18,7 @@ public class TarefaDAO {
 
 	public TarefaDAO() throws NamingException {
 		InitialContext ctx = new InitialContext();
-		dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/TaskDB");
+		dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/taskAPI");
 	}
 
 	public List<Tarefa> listar() throws SQLException {
