@@ -21,13 +21,22 @@ public class TarefaDAO {
 		dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/taskAPI");
 	}
 
-	public List<Tarefa> listar() throws SQLException {
+	public List<Tarefa> listar(int limit, int page) throws SQLException {
 		List<Tarefa> tarefas = new ArrayList<>();
 		String sql = "SELECT * FROM tarefas";
+		if(limit>0 && page>0) {
+			sql += " LIMIT ? OFFSET ?";
+		}
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
-			while (rs.next()) {
+				PreparedStatement stmt = conn.prepareStatement(sql);) {
+				if(limit>0 && page>0) {
+					stmt.setInt(1, limit);
+					stmt.setInt(2, limit*page);
+				}
+		
+				ResultSet rs = stmt.executeQuery();
+			
+				while (rs.next()) {
 				Tarefa t = new Tarefa(rs.getInt("id"), rs.getString("titulo"), rs.getString("descricao"),
 						rs.getBoolean("concluida"));
 				tarefas.add(t);
@@ -83,12 +92,19 @@ public class TarefaDAO {
 		return t;
 	}
 
-	public List<Tarefa> buscarPendentes() throws Exception {
+	public List<Tarefa> buscarPendentes(int limit, int page) throws Exception {
 		List<Tarefa> tarefas = new ArrayList<>();
 		String sql = "SELECT * FROM tarefas WHERE concluida = false";
+		if(limit>0 && page>0) {
+			sql += " LIMIT ? OFFSET ?";
+		}
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
+				PreparedStatement stmt = conn.prepareStatement(sql);){
+			if(limit>0 && page>0) {
+				stmt.setInt(1, limit);
+				stmt.setInt(2, limit*page);
+			}
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Tarefa tarefa = new Tarefa();
 				tarefa.setId(rs.getInt("id"));
@@ -109,12 +125,19 @@ public class TarefaDAO {
 		}
 	}
 	
-	public List<Tarefa> buscarConcluidas() throws Exception {
+	public List<Tarefa> buscarConcluidas(int limit, int page) throws Exception {
 		List<Tarefa> tarefas = new ArrayList<>();
 		String sql = "SELECT * FROM tarefas WHERE concluida = true";
+		if(limit>0 && page>0) {
+			sql += " LIMIT ? OFFSET ?";
+		}
 		try (Connection conn = dataSource.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
+				PreparedStatement stmt = conn.prepareStatement(sql);){
+			if(limit>0 && page>0) {
+				stmt.setInt(1, limit);
+				stmt.setInt(2, limit*(page));
+			}
+			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Tarefa tarefa = new Tarefa();
 				tarefa.setId(rs.getInt("id"));

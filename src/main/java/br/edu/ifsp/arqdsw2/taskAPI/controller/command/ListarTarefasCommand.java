@@ -14,7 +14,17 @@ public class ListarTarefasCommand implements Command {
 	@Override
 	public void executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		TarefaDAO dao = new TarefaDAO();
-		List<Tarefa> tarefas = dao.listar();
+		String pagina = request.getParameter("page");
+		String limite = request.getParameter("limit");
+		int page = 0;
+		int limit = 0;
+		if(pagina!=null && pagina.matches("^\\d+$")) {
+			page = Integer.parseInt(pagina);
+		}
+		if(limite!=null && limite.matches("^\\d+$")) {
+			limit = Integer.parseInt(limite);
+		}
+		List<Tarefa> tarefas = dao.listar(limit,page);
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		out.print(new Gson().toJson(tarefas));
