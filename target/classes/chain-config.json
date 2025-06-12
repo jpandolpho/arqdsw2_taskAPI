@@ -1,0 +1,11 @@
+{
+	"chain": [
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.GetTodasTarefasHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.PostTarefaHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.GetTarefaPorIdHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.PutAtualizarTarefaHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.DeleteDeletarTarefaHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.GetTarefasPendentesHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.PatchConcluirTarefaHandler"
+	]
+}
