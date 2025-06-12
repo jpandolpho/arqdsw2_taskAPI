@@ -108,4 +108,22 @@ public class TarefaDAO {
 			stmt.executeUpdate();
 		}
 	}
+	
+	public List<Tarefa> buscarConcluidas() throws Exception {
+		List<Tarefa> tarefas = new ArrayList<>();
+		String sql = "SELECT * FROM tarefas WHERE concluida = true";
+		try (Connection conn = dataSource.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery()) {
+			while (rs.next()) {
+				Tarefa tarefa = new Tarefa();
+				tarefa.setId(rs.getInt("id"));
+				tarefa.setTitulo(rs.getString("titulo"));
+				tarefa.setDescricao(rs.getString("descricao"));
+				tarefa.setConcluida(rs.getBoolean("concluida"));
+				tarefas.add(tarefa);
+			}
+		}
+		return tarefas;
+	}
 }

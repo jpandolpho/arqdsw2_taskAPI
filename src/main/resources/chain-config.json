@@ -6,6 +6,7 @@
 		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.PutAtualizarTarefaHandler",
 		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.DeleteDeletarTarefaHandler",
 		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.GetTarefasPendentesHandler",
+		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.GetTarefasConcluidasHandler",
 		"br.edu.ifsp.arqdsw2.taskAPI.controller.handler.PatchConcluirTarefaHandler"
 	]
 }
